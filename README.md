@@ -19,4 +19,4 @@ tilhørende beskrivelse av hvilken oppgave hver klasse løser.
   * [ ] En oversikt over hvilke use cases som er løst og hvordan de er realisert i
 programmet.
 
-![ER-diagram](https://studntnu-my.sharepoint.com/personal/chrismra_ntnu_no/Documents/Forms/All.aspx?slrid=b124539e-9084-5000-32b1-50832d765a44&FolderCTID=0x012000A5AC5604D08254438FB854B2D405501E&id=%2Fpersonal%2Fchrismra_ntnu_no%2FDocuments%2FNTNU%2F2%2E%20%C3%A5r%2F2%2E%20Semester%2FDatabaser%2F%C3%98ving%2FProsjekt%2FProjekt-ER%2Epng&parent=%2Fpersonal%2Fchrismra_ntnu_no%2FDocuments%2FNTNU%2F2%2E%20%C3%A5r%2F2%2E%20Semester%2FDatabaser%2F%C3%98ving%2FProsjekt)
+![ER-diagram](https://github.com/magnusrand/prosjektDB/blob/master/Projekt-ER.png)
