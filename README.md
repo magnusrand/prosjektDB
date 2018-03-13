@@ -10,11 +10,11 @@ grensesnitt. Husk at hensikten her er å trene på å bruke JDBC (Java Database
 Connectivity), og ikke selve programmeringen i Java.
 
 Dere skal levere følgende innen 22. mars:
-* Et kjørbart program i form av en JAR-fil.
-* Kildekoden til programmet i en zip-fil eller lignende.
-* En tekstlig beskrivelse som dokumenterer applikasjonen, levert som PDF.
+[ ] Et kjørbart program i form av en JAR-fil.
+[ ] Kildekoden til programmet i en zip-fil eller lignende.
+[ ] En tekstlig beskrivelse som dokumenterer applikasjonen, levert som PDF.
 Dokumentasjonen skal inneholde
-  * En oversikt over hvilke klasser som finnes i programmet deres og en
+  [ ] En oversikt over hvilke klasser som finnes i programmet deres og en
 tilhørende beskrivelse av hvilken oppgave hver klasse løser.
-  * En oversikt over hvilke use cases som er løst og hvordan de er realisert i
+  [ ] En oversikt over hvilke use cases som er løst og hvordan de er realisert i
 programmet.
