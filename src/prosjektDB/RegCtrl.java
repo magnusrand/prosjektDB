@@ -34,12 +34,12 @@ public class RegCtrl extends DBConn {
 		
 	}
 	
-	public void regØvelse() {
+	public void regovelse() {
 		
 	}
 	
 	@SuppressWarnings("resource")
-	public void regTreningsøkt() {
+	public void regTreningsokt() {
 		String dateTime; // format: YYYY-MM-DD HH:MM:SS
 		int varighet;
 		int form; // format: talle mellom 1 og 10
@@ -82,7 +82,7 @@ public class RegCtrl extends DBConn {
 	public static void main(String[] args) {
 		RegCtrl r = new RegCtrl();
 		r.regApparat();
-		r.regTreningsøkt();
+		r.regTreningsokt();
 	}
 	
 }

@@ -1,8 +1,8 @@
 package prosjektDB;
 
-public class TerminalClass{
+public class main{
 	
-	public TerminalClass() {
+	public main() {
 		//TODO
 	}
 	
