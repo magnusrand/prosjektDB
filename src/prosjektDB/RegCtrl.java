@@ -39,7 +39,7 @@ public class RegCtrl extends DBConn {
 	}
 	
 	@SuppressWarnings("resource")
-	public void regTreningsokt() {
+	public void regTreningsokt(int pnrFK) {
 		String dateTime; // format: YYYY-MM-DD HH:MM:SS
 		int varighet;
 		int form; // format: talle mellom 1 og 10
@@ -72,7 +72,7 @@ public class RegCtrl extends DBConn {
 		
 		try {
 			Statement st = conn.createStatement();
-			st.executeUpdate("INSERT INTO Apparat VALUES(" + "dateTime" + "," + Integer.toString(varighet) + "," + Integer.toString(form) + "," + Integer.toString(prestasjon) + ")");
+			st.executeUpdate("INSERT INTO Apparat VALUES(" + "dateTime" + "," + Integer.toString(varighet) + "," + Integer.toString(form) + "," + Integer.toString(prestasjon) + "," + Integer.toString(pnrFK) + ")");
 		}catch(Exception e) {
 			System.out.println("db error during insert of apparat");
 		}
@@ -82,7 +82,7 @@ public class RegCtrl extends DBConn {
 	public static void main(String[] args) {
 		RegCtrl r = new RegCtrl();
 		r.regApparat();
-		r.regTreningsokt();
+		r.regTreningsokt(1);
 	}
 	
 }
