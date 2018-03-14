@@ -7,6 +7,8 @@ public class main{
 	
 	public static void main(String args[]) {
 		//TODO
+		GetCtrl getController = new GetCtrl();
+		RegCtrl registerController = new RegCtrl();
 		Scanner scanner = new Scanner(System.in);
 		boolean shutoff = false;
 		int pnr = -1;
