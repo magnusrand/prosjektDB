@@ -38,13 +38,51 @@ public class RegCtrl extends DBConn {
 		
 	}
 	
+	@SuppressWarnings("resource")
 	public void regTreningsøkt() {
+		String dateTime; // format: YYYY-MM-DD HH:MM:SS
+		int varighet;
+		int form; // format: talle mellom 1 og 10
+		int prestasjon; // format: tall mellom 1 og 10
 		
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Dato og tid (format: YYYY-MM-DD HH:MM:SS): ");
+		dateTime = sc.nextLine();
+		if (!(dateTime.matches("\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}"))) {
+			throw new IllegalArgumentException("Formatet er ikke korrekt, format: YYYY-MM-DD HH:MM:SS");
+		}
+		
+		System.out.println("Varighet (i minutter): ");
+		varighet = sc.nextInt();
+		
+		System.out.println("Form: (tall mellom 1 og 10)");
+		form = sc.nextInt();
+		if (form <= 0 || form > 10) {
+			throw new IllegalArgumentException("Formatet er ikke korrekt, format: tall mellom 1-10 ");
+		}
+		
+		System.out.println("Prestasjon: (tall mellom 1 og 10)");
+		prestasjon = sc.nextInt();
+		if (prestasjon <= 0 || prestasjon > 10) {
+			throw new IllegalArgumentException("Formatet er ikke korrekt, format: tall mellom 1-10 ");
+		}
+		
+		
+		sc.close();
+		
+		try {
+			Statement st = conn.createStatement();
+			st.executeUpdate("INSERT INTO Apparat VALUES(" + "dateTime" + "," + Integer.toString(varighet) + "," + Integer.toString(form) + "," + Integer.toString(prestasjon) + ")");
+		}catch(Exception e) {
+			System.out.println("db error during insert of apparat");
+		}
 	}
+	
 	
 	public static void main(String[] args) {
 		RegCtrl r = new RegCtrl();
 		r.regApparat();
+		r.regTreningsøkt();
 	}
 	
 }
