@@ -78,11 +78,16 @@ public class RegCtrl extends DBConn {
 		}
 	}
 	
+	public void regPerson(int Pnr) {
+		//TODO
+	}
+	
 	
 	public static void main(String[] args) {
 		RegCtrl r = new RegCtrl();
 		r.regApparat();
 		r.regTreningsokt(1);
 	}
+	
 	
 }

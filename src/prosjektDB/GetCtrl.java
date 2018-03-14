@@ -7,6 +7,21 @@ import java.sql.*;
 
 public class GetCtrl extends DBConn {
 	
+	public boolean eksistererPerson(String Pnr) {
+		// IKKE FERDIG. Her skal det sjekkes om et personnummer er registrert i databasen eller ikke.
+		try {
+	    	   
+			Statement stmt = conn.createStatement();
+	        String query = "select Navn from Person where Pnr ='"+Pnr+"'";
+	        ResultSet rs = stmt.executeQuery(query);
+	        System.out.println("Navnet for pnr: " + Pnr +" er "+ rs.next());
+	        return true;
+	         } catch (Exception e) {
+	        	 System.out.println("db error during select of navn = "+e);
+	         }
+		return false;
+	}
+	
     public void printPersonNavn (String Pnr) {
     		// tar inn personnummer, printer ut navn i konsollen.
        try {
