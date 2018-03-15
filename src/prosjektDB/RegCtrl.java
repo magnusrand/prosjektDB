@@ -40,7 +40,7 @@ public class RegCtrl extends DBConn {
 	}
 	
 	public void regovelse() {
-		
+		//TODO
 	}
 	
 	@SuppressWarnings("resource")
@@ -115,6 +115,36 @@ public class RegCtrl extends DBConn {
 				st.executeUpdate("INSERT INTO Økt_har_øvelse VALUES(" + ovelse + "," + "'" + autoKey + "'" + ")");
 			}catch(Exception e) {
 				System.out.println("db error during insert of Økt_har_øvelse " + e);
+			}
+		}
+		
+		
+		while (true) {
+			System.out.println("Vil du registrere notat? (Y/N): ");
+			if (sc.nextLine().toLowerCase().equals("n")) {
+				break;
+			}
+			System.out.println("Formål: ");
+			String formål = "'" + sc.nextLine() + "'";
+			if (formål.equals("'null'")) {
+				formål = "null";
+			}
+			System.out.println("Opplevelse: ");
+			String opplevelse = "'" + sc.nextLine() + "'";
+			if (opplevelse.equals("'null'")) {
+				opplevelse = "null";
+			}
+			System.out.println("Annet: ");
+			String annet = "'" + sc.nextLine() + "'";
+			if (annet.equals("'null'")) {
+				annet = "null";
+			}
+			
+			try {
+				Statement st = conn.createStatement();
+				st.executeUpdate("INSERT INTO Notat (Treningsformål, Opplevelse, Annet, TreningsøktID) VALUES(" + formål + "," + opplevelse + "," + annet + "," + "'" + autoKey + "'" + ")");
+			}catch(Exception e) {
+				System.out.println("db error during insert of Notat " + e);
 			}
 		}
 		
