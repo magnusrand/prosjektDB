@@ -40,7 +40,61 @@ public class RegCtrl extends DBConn {
 	}
 	
 	public void regovelse() {
-		//TODO
+		String navn;
+		String kilo;
+		String sett;
+		String apparat;
+		String beskrivelse;
+		String type;
+		
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Øvelsenavn: ");
+		navn = "'" + sc.nextLine() + "'";
+		if (navn.equals("'null'")) {
+			navn = "null";
+		}
+		
+		System.out.println("Antall kilo: ");
+		kilo = "'" + sc.nextLine() + "'";
+		if (kilo.equals("'null'")) {
+			kilo = "null";
+		}
+		
+		System.out.println("Antall sett: ");
+		sett = "'" + sc.nextLine() + "'";
+		if (sett.equals("'null'")) {
+			sett = "null";
+		}
+		
+		System.out.println("Apparatnavn: ");
+		apparat = "'" + sc.nextLine() + "'";
+		if (apparat.equals("'null'")) {
+			apparat = "null";
+		}
+		
+		System.out.println("Beskrivelse: ");
+		beskrivelse = "'" + sc.nextLine() + "'";
+		if (beskrivelse.equals("'null'")) {
+			beskrivelse = "null";
+		}
+		
+		System.out.println("Montert eller fri? (M/F): ");
+		type = "'" + sc.nextLine() + "'";
+		if (type.equals("'null'")) {
+			type = "null";
+		}
+		if(type.toLowerCase().equals("'f'")||type.toLowerCase().equals("'m'")){
+			throw new IllegalArgumentException("Feil type, bruk f eller m.");
+		}
+		
+		try {
+			Statement st = conn.createStatement();
+			st.executeUpdate("INSERT INTO Øvelse (Navn, Antall_kilo, Antall_sett, Apparat_navn, Beskrivelse, Øvelse_type) VALUES("+navn+","+kilo+","+sett+","+apparat+","+beskrivelse+","+type+")");
+		}catch(Exception e) {
+			System.out.println("db error during insert of øvelse: "+e);
+		}
+		
+		
 	}
 	
 	@SuppressWarnings("resource")
@@ -150,19 +204,52 @@ public class RegCtrl extends DBConn {
 		
 	}
 	
-	public void regPerson(int Pnr) {
-		//TODO
+	public void regPerson(String Pnr) {
+		String navn;
+		
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Navn: ");
+		navn = "'" + sc.nextLine() + "'";
+		if (navn.equals("'null'")) {
+			navn = "null";
+		}
+		
+		try {
+			Statement st = conn.createStatement();
+			st.executeUpdate("INSERT INTO Person VALUES("+"'"+Pnr+"'"+","+navn+")");
+		}catch(Exception e) {
+			System.out.println("db error during insert of person: "+e);
+		}
+		
 	}
 	
 	public void regOvelseGruppe() {
-		//TODO
+		String navn;
+		
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Øvelsesgruppenavn: ");
+		navn = "'" + sc.nextLine() + "'";
+		if (navn.equals("'null'")) {
+			navn = "null";
+		}
+		
+		try {
+			Statement st = conn.createStatement();
+			st.executeUpdate("INSERT INTO Øvelsesgruppe (Navn) VALUES("+navn+")");
+		}catch(Exception e) {
+			System.out.println("db error during insert of øvelsesgruppe: "+e);
+		}
+		
+		
+		
 	}
 	
 	
 	public static void main(String[] args) {
 		RegCtrl r = new RegCtrl();
 		//r.regApparat();
-		r.regTreningsokt(1);
+		//r.regTreningsokt(1);
+		r.regOvelseGruppe();
 	}
 	
 	
