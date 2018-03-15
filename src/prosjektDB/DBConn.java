@@ -15,7 +15,7 @@ public class DBConn {
 			 Properties p = new Properties ();
 			 p.put("user","tobiassk_gruppe169");
 			 p.put("password","passord169");
-			 conn = DriverManager.getConnection("jdbc:mysql://mysql.stud.ntnu.no/dbname?autoReconnect=true&useSSL=false",p);
+			 conn = DriverManager.getConnection("jdbc:mysql://mysql.stud.ntnu.no/tobiassk_treningsdagbok?autoReconnect=true&useSSL=false",p);
 		 } catch (Exception e) {
 			 throw new RuntimeException("Unable to connect", e);
 		}

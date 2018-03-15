@@ -1,6 +1,7 @@
 package prosjektDB;
 
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class RegCtrl extends DBConn {
@@ -15,13 +16,17 @@ public class RegCtrl extends DBConn {
 		
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Apparatnavn: ");
-		navn = "'"+sc.nextLine()+"'";
+		navn = "'" + sc.nextLine() + "'";
+		if (navn.equals("'null'")) {
+			navn = "null";
+		}
 		
 		System.out.println("Beskrivelse: ");
-		beskrivelse = "'"+sc.nextLine()+"'";
-		if(beskrivelse == "") {
-			beskrivelse = "'null'";
+		beskrivelse = "'" + sc.nextLine() + "'";
+		if (beskrivelse.equals("'null'")) {
+			beskrivelse = "null";
 		}
+		
 		
 		sc.close();
 		
@@ -41,51 +46,80 @@ public class RegCtrl extends DBConn {
 	@SuppressWarnings("resource")
 	public void regTreningsokt(int pnrFK) {
 		String dateTime; // format: YYYY-MM-DD HH:MM:SS
-		int varighet;
-		int form; // format: talle mellom 1 og 10
-		int prestasjon; // format: tall mellom 1 og 10
+		String varighet;
+		String form; // format: talle mellom 1 og 10
+		String prestasjon; // format: tall mellom 1 og 10
+		String pnrFKStr = "'" + Integer.toString(pnrFK) + "'";
+		
+		ArrayList<String> ovelser = new ArrayList<String>();
 		
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Dato og tid (format: YYYY-MM-DD HH:MM:SS): ");
 		dateTime = sc.nextLine();
-		if (!(dateTime.matches("\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}"))) {
-			throw new IllegalArgumentException("Formatet er ikke korrekt, format: YYYY-MM-DD HH:MM:SS");
+		if (!(dateTime.equals("null"))) {
+			if (!(dateTime.matches("\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}"))) {
+				throw new IllegalArgumentException("Formatet er ikke korrekt, format: YYYY-MM-DD HH:MM:SS");
+			}
+			dateTime = "'" + dateTime + "'";
 		}
 		
 		System.out.println("Varighet (i minutter): ");
-		varighet = sc.nextInt();
-		
-		System.out.println("Form: (tall mellom 1 og 10)");
-		form = sc.nextInt();
-		if (form <= 0 || form > 10) {
-			throw new IllegalArgumentException("Formatet er ikke korrekt, format: tall mellom 1-10 ");
+		varighet ="'" + sc.nextLine() + "'";
+		if (varighet.equals("'null'")) {
+			varighet = "null";
 		}
 		
-		System.out.println("Prestasjon: (tall mellom 1 og 10)");
-		prestasjon = sc.nextInt();
-		if (prestasjon <= 0 || prestasjon > 10) {
-			throw new IllegalArgumentException("Formatet er ikke korrekt, format: tall mellom 1-10 ");
+		System.out.println("Form (tall mellom 1 og 10): ");
+		form = sc.nextLine();
+		if (!(form.equals("null"))) {
+			if (Integer.parseInt(form) <= 0 || Integer.parseInt(form) > 10) {
+				throw new IllegalArgumentException("Formatet er ikke korrekt, format: tall mellom 1-10 ");
+			}
+			form = "'" + form + "'";
 		}
 		
+		System.out.println("Prestasjon (tall mellom 1 og 10): ");
+		prestasjon = sc.nextLine();
+		if (!(form.equals("null"))) {
+			if (Integer.parseInt(prestasjon) <= 0 || Integer.parseInt(prestasjon) > 10) {
+				throw new IllegalArgumentException("Formatet er ikke korrekt, format: tall mellom 1-10 ");
+			}
+			prestasjon = "'" + prestasjon + "'";
+		}
+		
+		while (true) {
+			System.out.println("Øvelse ID (Skriv end når ferdig):");
+			String ovelseID = sc.next(); 
+			if (ovelseID.toLowerCase().equals("end")) {
+				break;
+			}
+			ovelser.add(ovelseID);
+		}
 		
 		sc.close();
 		
+		
 		try {
 			Statement st = conn.createStatement();
-			st.executeUpdate("INSERT INTO Apparat VALUES(" + "dateTime" + "," + Integer.toString(varighet) + "," + Integer.toString(form) + "," + Integer.toString(prestasjon) + "," + Integer.toString(pnrFK) + ")");
+			st.executeUpdate("INSERT INTO Treningsøkt (Dato, Varighet, Form, Prestasjon, Pnr) VALUES(" + dateTime + "," + varighet + "," + form + "," + prestasjon + "," + pnrFKStr + ")");
 		}catch(Exception e) {
-			System.out.println("db error during insert of apparat");
+			System.out.println("db error during insert of treningsøkt " + e);
 		}
+		
 	}
 	
 	public void regPerson(int Pnr) {
 		//TODO
 	}
 	
+	public void regOvelseGruppe() {
+		//TODO
+	}
+	
 	
 	public static void main(String[] args) {
 		RegCtrl r = new RegCtrl();
-		r.regApparat();
+		//r.regApparat();
 		r.regTreningsokt(1);
 	}
 	
