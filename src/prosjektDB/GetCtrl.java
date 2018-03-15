@@ -7,15 +7,23 @@ import java.sql.*;
 
 public class GetCtrl extends DBConn {
 	
+	public GetCtrl() {
+		connect();
+	}
+	
 	public boolean eksistererPerson(String Pnr) {
 		// IKKE FERDIG. Her skal det sjekkes om et personnummer er registrert i databasen eller ikke.
 		try {
-	    	   
 			Statement stmt = conn.createStatement();
-	        String query = "select Navn from Person where Pnr ='"+Pnr+"'";
+			//String query = "select * from Person";
+	        String query = "select Navn from tobiassk_treningsdagbok.Person where Pnr ='"+Pnr+"'";
 	        ResultSet rs = stmt.executeQuery(query);
-	        System.out.println("Navnet for pnr: " + Pnr +" er "+ rs.next());
-	        return true;
+	        if(rs.next()) {
+	        		return true;
+	        }
+	        else {
+	        		return false;
+	        }
 	         } catch (Exception e) {
 	        	 System.out.println("db error during select of navn = "+e);
 	         }
@@ -27,9 +35,11 @@ public class GetCtrl extends DBConn {
        try {
     	   
            Statement stmt = conn.createStatement();
-           String query = "select Navn from Person where Pnr ='"+Pnr+"'";
+           String query = "select * from Person";
+           //String query = "select Navn from tobiassk_treningsdagbok.Person where Pnr ='"+Pnr+"'";
            ResultSet rs = stmt.executeQuery(query);
-           System.out.println("Navnet for pnr: " + Pnr +" er "+ rs.next());
+           rs.next();
+           System.out.println("Navnet for pnr: " + Pnr +" er "+ rs.getString("Navn"));
                 } catch (Exception e) {
           System.out.println("db error during select of navn = "+e);
 		}
@@ -44,7 +54,7 @@ public class GetCtrl extends DBConn {
 	       ResultSet rs = stmt.executeQuery(query);
 	       System.out.println("Info om TreningsøktID: " + OktID +":"+ "Dato: " + rs.getString("Dato") + " " + "Varighet: " + rs.getString("Varighet") + " " + "Form: " + rs.getString("Form") + " " + "Prestasjon: " + rs.getString("Prestasjon") + " " + "Pnr: " + rs.getString("Pnr"));
 	            } catch (Exception e) {
-	      System.out.println("db error during select of navn = "+e);
+	      System.out.println("db error during select of Treningsøkt = "+e);
 		}
 	   
 	   

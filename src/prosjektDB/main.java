@@ -7,19 +7,74 @@ import java.util.Scanner;
 
 public class main{
 	static Scanner scanner = new Scanner(System.in);
-	static List<String> commands = Arrays.asList("help", "shutoff", "register");
+	static List<String> commands = Arrays.asList("help", "shutoff", "register", "login", "checklogin");
 	static boolean shutoff = false;
 
 	static GetCtrl getController = new GetCtrl();
 	static RegCtrl registerController = new RegCtrl();
+	
+	static String loggedInPnr = "Ingen bruker pålogget enda.";
 
 
 	public static void printHelp() {
 		// Metode for aa printe ut alternativer i programmet
 		
 		System.out.println("Du skrev hjelp.\nHer er ting du kan gjoere i programmet:\n"+
-				"'hjelp' - Viser denne listen over funksjonalitet i programmet.\n"
-				+"'shutoff' - avslutter programmet.\n'register' - starter registrering av ny bruker.\n");
+				"'help' - Viser denne listen over funksjonalitet i programmet.\n"
+				+"'shutoff' - avslutter programmet.\n'register' - starter registrering av ny bruker.\n'login' - logger på ønsket bruker gjennom personnummer.\n'home' - tar deg tilbake til hovedmeny.\n'checklogin' - sjekker hvilken bruker som er pålogget.\n");
+	}
+	
+	public static void registerOkt() {
+		//TODO
+	}
+	
+	public static void registerOvelse() {
+		//TODO
+	}
+	
+	public static void registerApparat() {
+		//TODO
+	}
+	
+	public static void registerOvelsesgruppe() {
+		//TODO
+	}
+	
+	public static void register() {
+		List<String> localCommands = Arrays.asList("bruker", "treningsøkt", "øvelse", "apparat", "øvelsesgruppe");
+		System.out.println("----Hva vil du registerere?----");
+		System.out.println("Valg: \n1 - bruker - skriv 'bruker'.\n2 - Treningsøkt - skriv 'treningsøkt'.\n3 - Øvelse - skriv 'øvelse'.\n4 - Apparat - skriv 'apparat'.\n5 - Øvelsesgruppe - skriv 'øvelsesgruppe'.\n");
+		System.out.print("Skriv inn valg: ");
+		String registerValg = scanner.next();
+		if(registerValg.toLowerCase().equals("home")) {
+			return;
+		}
+		if(localCommands.contains(registerValg.toLowerCase())) {
+			// Bruker skrev inn gyldig command
+			if(registerValg.toLowerCase().equals("bruker")) {
+				registerUser();
+			}
+			
+			if(registerValg.toLowerCase().equals("treningsøkt")) {
+				registerOkt();
+			}
+
+			if(registerValg.toLowerCase().equals("øvelse")) {
+				registerOvelse();
+			}
+			
+			if(registerValg.toLowerCase().equals("apparat")) {
+				registerApparat();
+			}
+			
+			if(registerValg.toLowerCase().equals("øvelsesgruppe")) {
+				registerOvelsesgruppe();
+			}
+		}
+		else {
+			System.out.println("Skriv inn en gyldig kommando, eller home for å gå til hovedmenyen.");
+			register();
+		}
 	}
 	
 	
@@ -27,10 +82,14 @@ public class main{
 		System.out.println("------Registrering av ny bruker------\nHva er ditt personnummer?");
 		System.out.print("Personnummer: ");
 		String Pnr = scanner.next();
+		if(Pnr.toLowerCase().equals("home")) {
+			return;
+		}
 		try {
 			int PnrInt = Integer.parseInt(Pnr);
 			if(getController.eksistererPerson(Pnr)) {
 				System.out.println("Personen er allerede registrert.");
+				getController.printPersonNavn(Pnr);
 			} else {
 				registerController.regPerson(PnrInt);
 			}
@@ -41,7 +100,7 @@ public class main{
 	}
 	
 	public static void performAction(String action) {
-		// Denne metoden m� holde if-setninger for hver av actions, og deretter kj�re hver action sin metode.
+		// Denne metoden m� holde if-setninger for hver av actions, og deretter kj�re hver action sin metode.
 		if(action.equals("help")) {
 			printHelp();
 		}
@@ -51,7 +110,44 @@ public class main{
 		}
 		
 		if(action.equals("register")) {
-			registerUser();
+			register();
+		}
+		
+		if(action.equals("login")) {
+			login();
+		}
+		
+		if(action.equals("checklogin")) {
+			checkLoginPnr();
+		}
+	}
+	
+	public static void login() {
+		// TODO
+		System.out.print("Skriv inn personnr du vil logge inn på:");
+		String loginPnr = scanner.next();
+		
+		if(loginPnr.toLowerCase().equals("home")) {
+			return;
+		}
+		
+		//Try catch her sjekker bare om personen skrev inn tall.
+		try {
+			int parsedIntCheck = Integer.parseInt(loginPnr);
+		} catch (Exception e) {
+			System.out.println("Personnummer må være tall!");
+			login();
+		}
+		if(getController.eksistererPerson(loginPnr)) {
+			// PersonIDen eksisterte, logger inn på denne.
+			loggedInPnr = loginPnr;
+			System.out.println("Du logget inn på personnummer: " + loginPnr);
+			System.out.print("Velkommen ");
+			getController.printPersonNavn(loginPnr);
+		}
+		else {
+			System.out.println("Ingen bruker registrert på pnr: " + loginPnr);
+			login();
 		}
 	}
 	
@@ -60,7 +156,7 @@ public class main{
 	}
 	
 	public static void waitForUserAction() {
-		// Ber brukeren skrive en handling, og sjekker om det er gyldig. Hvis gyldig kj�res performaction.
+		// Ber brukeren skrive en handling, og sjekker om det er gyldig. Hvis gyldig kj�res performaction.
 		System.out.print("Skriv en handling:");
 		String action = scanner.next();
 		action = action.toLowerCase();
@@ -72,11 +168,22 @@ public class main{
 		}	
 	}
 	
+	public static void checkLoginPnr() {
+		System.out.println("Logged in Pnr er: " + loggedInPnr);
+		try {
+			int parsedInt = Integer.parseInt(loggedInPnr);
+			getController.printPersonNavn(loggedInPnr);
+		} catch (Exception e) {
+			// Ingen bruker pålogget.
+			return;
+		}
+	}
+	
 	public static void main(String args[]) {
 		//Main metoden.
 
 		System.out.println("Velkommen til treningsdagbok\n");
-		System.out.println("For hjelp skriv inn 'hjelp'");
+		System.out.println("For hjelp skriv inn 'help'");
 
 		
 		
