@@ -11,11 +11,63 @@ public class GetCtrl extends DBConn {
 		connect();
 	}
 	
-	public boolean eksistererPerson(String Pnr) {
-		// IKKE FERDIG. Her skal det sjekkes om et personnummer er registrert i databasen eller ikke.
+	public boolean eksistererOvelsesgruppe(String ovelsesgruppeID) {
 		try {
 			Statement stmt = conn.createStatement();
-			//String query = "select * from Person";
+	        String query = "select * from tobiassk_treningsdagbok.Øvelsesgruppe where GruppeID ='"+ovelsesgruppeID+"'";
+	        ResultSet rs = stmt.executeQuery(query);
+	        if(rs.next()) {
+	        		return true;
+	        }
+	        else {
+	        		System.out.println("Ingen øvelsesgrupper med denne IDen er registrert!");
+	        		return false;
+	        }
+	         } catch (Exception e) {
+	        	 System.out.println("db error during select of navn = "+e);
+	         }
+		return false;
+	}
+	
+	public boolean eksistererOvelse(String OvelseID) {
+		try {
+			Statement stmt = conn.createStatement();
+	        String query = "select * from tobiassk_treningsdagbok.Øvelse where ØvelseID ='"+OvelseID+"'";
+	        ResultSet rs = stmt.executeQuery(query);
+	        if(rs.next()) {
+	        		return true;
+	        }
+	        else {
+	        		System.out.println("Ingen øvelser med dette navnet er registrert!");
+	        		return false;
+	        }
+	         } catch (Exception e) {
+	        	 System.out.println("db error during select of navn = "+e);
+	         }
+		return false;
+	}
+	
+	public boolean eksistererApparat(String apparatNavn) {
+		try {
+			Statement stmt = conn.createStatement();
+	        String query = "select Navn from tobiassk_treningsdagbok.Apparat where Navn ='"+apparatNavn+"'";
+	        ResultSet rs = stmt.executeQuery(query);
+	        if(rs.next()) {
+	        		return true;
+	        }
+	        else {
+	        		System.out.println("Ingen apparater med dette navnet er registrert!");
+	        		return false;
+	        }
+	         } catch (Exception e) {
+	        	 System.out.println("db error during select of navn = "+e);
+	         }
+		return false;
+	}
+	
+	public boolean eksistererPerson(String Pnr) {
+		try {
+			Statement stmt = conn.createStatement();
 	        String query = "select Navn from tobiassk_treningsdagbok.Person where Pnr ='"+Pnr+"'";
 	        ResultSet rs = stmt.executeQuery(query);
 	        if(rs.next()) {
@@ -35,7 +87,7 @@ public class GetCtrl extends DBConn {
        try {
     	   
            Statement stmt = conn.createStatement();
-           String query = "select * from Person";
+           String query = "select Navn from Person  where Pnr = '"+Pnr+"'";
            //String query = "select Navn from tobiassk_treningsdagbok.Person where Pnr ='"+Pnr+"'";
            ResultSet rs = stmt.executeQuery(query);
            rs.next();
@@ -52,16 +104,56 @@ public class GetCtrl extends DBConn {
 	       Statement stmt = conn.createStatement();
 	       String query = "select * from Treningsøkt where TreningsøktID ='"+OktID+"'";
 	       ResultSet rs = stmt.executeQuery(query);
+	       rs.next();
 	       System.out.println("Info om TreningsøktID: " + OktID +":"+ "Dato: " + rs.getString("Dato") + " " + "Varighet: " + rs.getString("Varighet") + " " + "Form: " + rs.getString("Form") + " " + "Prestasjon: " + rs.getString("Prestasjon") + " " + "Pnr: " + rs.getString("Pnr"));
 	            } catch (Exception e) {
 	      System.out.println("db error during select of Treningsøkt = "+e);
 		}
-	   
-	   
-
-	 
-	 
 }
+    
+	public void printOvelse(String ovelseID) {
+		// Ttar inn en id for øvelse, printer ut info om øvelsen.
+		try {
+			   
+		       Statement stmt = conn.createStatement();
+		       String query = "select * from Øvelse where ØvelseID ='"+ovelseID+"'";
+		       ResultSet rs = stmt.executeQuery(query);
+		       rs.next();
+		       System.out.println("Info om Øvelse med ID: " + ovelseID +":"+ "Navn: " + rs.getString("Navn") + " " + "Antall kilo: " + rs.getString("Antall_kilo") + " " + "Antall sett: " + rs.getString("Antall_sett") + " " + "Apparat navn: " + rs.getString("Apparat_navn") + " " + "Beskrivelse : " + rs.getString("Beskrivelse") + "Øvelsetype: " + rs.getString("Øvelse_type"));
+		            } catch (Exception e) {
+		      System.out.println("db error during select of Treningsøkt = "+e);
+			}
+	}
+	
+	public void printApparat(String apparatID) {
+		
+		// tar inn ApparatID (navnet på apparatet), printer ut all info om Apparatet.
+		   try {
+			   
+		       Statement stmt = conn.createStatement();
+		       String query = "select * from Apparat where Navn ='"+apparatID+"'";
+		       ResultSet rs = stmt.executeQuery(query);
+		       rs.next();
+		       System.out.println("Info om Apparat med ID: " + apparatID +":"+ "Navn: " + rs.getString("Navn") + " " + "Beskrivelse: " + rs.getString("Beskrivelse"));
+		            } catch (Exception e) {
+		      System.out.println("db error during select of Treningsøkt = "+e);
+			}
+	}
+	
+	public void printOvelsesgruppe(String ovelsesgruppeID) {
+		// TODO
+		   try {
+			   
+		       Statement stmt = conn.createStatement();
+		       String query = "select * from Øvelsesgruppe where GruppeID ='"+ovelsesgruppeID+"'";
+		       ResultSet rs = stmt.executeQuery(query);
+		       rs.next();
+		       System.out.println("Info om øvelsesgruppe med ID: " + ovelsesgruppeID +":"+ "Navn: " + rs.getString("Navn"));
+		            } catch (Exception e) {
+		      System.out.println("db error during select of Treningsøkt = "+e);
+			}
+		
+	}
     
     
     

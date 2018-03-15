@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 public class main{
 	static Scanner scanner = new Scanner(System.in);
-	static List<String> commands = Arrays.asList("help", "shutoff", "register", "login", "checklogin");
+	static List<String> commands = Arrays.asList("help", "shutoff", "register", "login", "checklogin", "load");
 	static boolean shutoff = false;
 
 	static GetCtrl getController = new GetCtrl();
@@ -21,13 +21,16 @@ public class main{
 		
 		System.out.println("Du skrev hjelp.\nHer er ting du kan gjoere i programmet:\n"+
 				"'help' - Viser denne listen over funksjonalitet i programmet.\n"
-				+"'shutoff' - avslutter programmet.\n'register' - starter registrering av ny bruker/økt/øvelse/apparat/øvelsesgruppe.\n'login' - logger på ænsket bruker gjennom personnummer.\n'home' - tar deg tilbake til hovedmeny.\n'checklogin' - sjekker hvilken bruker som er pålogget.\n");
+				+"'shutoff' - avslutter programmet.\n'load' - starter innlasting av økt/øvelse/apparat/øvelsesgruppe.\n'register' - starter registrering av ny bruker/økt/øvelse/apparat/øvelsesgruppe.\n'login' - logger på ænsket bruker gjennom personnummer.\n'home' - tar deg tilbake til hovedmeny.\n'checklogin' - sjekker hvilken bruker som er pålogget.\n");
 	}
 	
 	public static void registerOkt() {
 		//TODO
 		try {
-		registerController.regTreningsokt(Integer.parseInt(loggedInPnr));
+			if(checkIfInt(loggedInPnr)) {
+				registerController.regTreningsokt(Integer.parseInt(loggedInPnr));
+			}
+			
 		} catch (Exception e) {
 			System.out.println("Logged in pnr er ikke en integer. Har du logget inn?");
 		}
@@ -99,10 +102,10 @@ public class main{
 				System.out.println("Personen er allerede registrert.");
 				getController.printPersonNavn(Pnr);
 			} else {
-				registerController.regPerson(PnrInt);
+				registerController.regPerson(Pnr);
 			}
 		} catch (Exception e) {
-			System.out.println("Ugyldig personummer! Skriv inn et tall");
+			System.out.println("Ugyldig personummer! Skriv inn et tall. Skriv home om du vil tilbake til hovedmenyen.");
 			registerUser();
 		}
 	}
@@ -128,6 +131,10 @@ public class main{
 		if(action.equals("checklogin")) {
 			checkLoginPnr();
 		}
+		
+		if(action.equals("load")) {
+			load();
+		}
 	}
 	
 	public static void login() {
@@ -144,7 +151,7 @@ public class main{
 			int parsedIntCheck = Integer.parseInt(loginPnr);
 		} catch (Exception e) {
 			System.out.println("Personnummer må være tall!");
-			login();
+			return;
 		}
 		if(getController.eksistererPerson(loginPnr)) {
 			// PersonIDen eksisterte, logger inn pÃ¥ denne.
@@ -159,12 +166,104 @@ public class main{
 		}
 	}
 	
+	public static boolean checkIfInt(String inputString) {
+		try {
+			Integer.parseInt(inputString);
+			return true;
+		} catch (Exception e) {
+			System.out.println("Dette var ikke en integer");
+			return false;
+		}
+	}
+	
+	public static void getTreningsokt() {
+		System.out.print("Skriv inn treningsøktID: ");
+		String oktID = scanner.next();
+		if(checkIfInt(oktID)) {
+			getController.printTreningsOkt(oktID);
+		}
+
+	}
+	
+	public static void getOvelse() {
+		System.out.print("Skriv inn øvelseID: ");
+		String ovelseID = scanner.next();
+		if(checkIfInt(ovelseID)) {
+			if(getController.eksistererOvelse(ovelseID)) {
+				getController.printOvelse(ovelseID);
+			}
+		} else {
+			return;
+		}
+
+	}
+	
+	public static void getApparat() {
+		System.out.print("Skriv inn apparatnavn: ");
+		String apparatID = scanner.next();
+		try {
+			Integer.parseInt(apparatID);
+			System.out.println("Skriv inn et navn (string), ikke en int.");
+		} catch (Exception e){
+			if(getController.eksistererApparat(apparatID)) {
+				getController.printApparat(apparatID);
+			}
+		}
+
+	}
+	
+	public static void getOvelsesgruppe() {
+		System.out.print("Skriv inn øvelsesgruppeID: ");
+		String ovelsesgruppeID = scanner.next();
+		if(checkIfInt(ovelsesgruppeID)) {
+			if(getController.eksistererOvelsesgruppe(ovelsesgruppeID)) {
+				getController.printOvelsesgruppe(ovelsesgruppeID);
+			}
+		
+		} else {
+			return;
+		}
+
+	}
+	
+	public static void load() {
+		// kalles av bruker for å entre valgmenyen for å laste inn økter/øvelser/apparater/øvelsesgrupper
+		
+		List<String> localLoadCommands = Arrays.asList("treningsøkt", "øvelse", "apparat", "øvelsesgruppe");
+		System.out.println("Hva vil du laste inn? Her er valgene:\n - Treningsøkt - skriv 'treningsøkt'.\n - Øvelse - skriv 'øvelse'.\n - Apparat - skriv 'apparat'\n - Øvelsesgruppe - skriv 'øvelsesgruppe'.");
+		System.out.print("Skriv valg her: ");
+		String loadInput = scanner.next();
+		if(loadInput.equals("home")) {
+			return;
+		}
+		else if(!(localLoadCommands.contains(loadInput))) {
+			System.out.println("Dette var ikke en gyldig kommando. Velg en av de som er listet, eller skriv 'home' for å komme til hovedmenyen.");
+		}
+		else {
+			if(loadInput.equals("treningsøkt")) {
+				getTreningsokt();
+			}
+			else if(loadInput.equals("øvelse")) {
+				getOvelse();
+			}
+			else if(loadInput.equals("apparat")) {
+				getApparat();
+			}
+			else if(loadInput.equals("øvelsesgruppe")) {
+				getOvelsesgruppe();
+			}
+		}
+		
+	}
+	
+	
 	public static void shutOff() {
 		shutoff = true;
 	}
 	
 	public static void waitForUserAction() {
 		// Ber brukeren skrive en handling, og sjekker om det er gyldig. Hvis gyldig kjï¿½res performaction.
+		System.out.println("--- HOVEDMENY ---");
 		System.out.print("Skriv en handling:");
 		String action = scanner.next();
 		action = action.toLowerCase();
@@ -172,7 +271,7 @@ public class main{
 			performAction(action);
 		}
 		else {
-			System.out.println("Ugyldig action. Skriv 'hjelp' om du trenger hjelp.");
+			System.out.println("Ugyldig action. Skriv 'help' om du trenger hjelp.");
 		}	
 	}
 	
