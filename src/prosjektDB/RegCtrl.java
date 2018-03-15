@@ -1,6 +1,7 @@
 package prosjektDB;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -83,17 +84,48 @@ public class RegCtrl extends DBConn {
 		if (type.equals("'null'")) {
 			type = "null";
 		}
-		if(type.toLowerCase().equals("'f'")||type.toLowerCase().equals("'m'")){
+		if(!(type.toLowerCase().equals("'f'")||type.toLowerCase().equals("'m'"))){
 			throw new IllegalArgumentException("Feil type, bruk f eller m.");
 		}
 		
+		Integer autoKey = null;
 		try {
-			Statement st = conn.createStatement();
-			st.executeUpdate("INSERT INTO Øvelse (Navn, Antall_kilo, Antall_sett, Apparat_navn, Beskrivelse, Øvelse_type) VALUES("+navn+","+kilo+","+sett+","+apparat+","+beskrivelse+","+type+")");
+			java.sql.PreparedStatement ps = conn.prepareStatement("INSERT INTO Øvelse (Navn, Antall_kilo, Antall_sett, Apparat_navn, Beskrivelse, Øvelse_type) VALUES("+navn+","+kilo+","+sett+","+apparat+","+beskrivelse+","+type+")",Statement.RETURN_GENERATED_KEYS);
+			ps.executeUpdate();
+			ResultSet rs = ps.getGeneratedKeys();
+			if(rs.next()){
+				autoKey = rs.getInt(1);
+			}
 		}catch(Exception e) {
 			System.out.println("db error during insert of øvelse: "+e);
 		}
 		
+		while (true) {
+			System.out.println("Øvelsesgruppe (oppgi navn) (Skriv end når ferdig):");
+			String øvelsesgruppe = sc.next(); 
+			if (øvelsesgruppe.toLowerCase().equals("end")) {
+				break;
+			}
+			String øvelsesgruppeid = "";
+			try {
+				Statement st = conn.createStatement();
+				ResultSet rs = st.executeQuery("SELECT GruppeID from Øvelsesgruppe WHERE navn = '"+øvelsesgruppe+"'");
+				if(rs.next()){
+					øvelsesgruppeid ="'"+ Integer.toString(rs.getInt(1))+"'";					
+				}
+			} catch (SQLException e) {
+				throw new IllegalArgumentException("Feil ved henting av øvelsesgruppeid: "+e);
+			}
+			
+			try {
+				Statement st = conn.createStatement();
+				st.executeUpdate("INSERT INTO Øvelse_i_gruppe VALUES("+"'"+autoKey+"'"+","+øvelsesgruppeid+")");
+			}catch(Exception e) {
+				System.out.println("db error during insert of øvelse_i_gruppe: "+e);
+			}
+			
+			
+		}
 		
 	}
 	
@@ -173,9 +205,10 @@ public class RegCtrl extends DBConn {
 		}
 		
 		
+		System.out.println("Vil du registrere notat? (Y/N): ");
 		while (true) {
-			System.out.println("Vil du registrere notat? (Y/N): ");
-			if (sc.nextLine().toLowerCase().equals("n")) {
+			String branch = sc.next().toLowerCase();
+			if (branch.equals("n")) {
 				break;
 			}
 			System.out.println("Formål: ");
@@ -247,9 +280,8 @@ public class RegCtrl extends DBConn {
 	
 	public static void main(String[] args) {
 		RegCtrl r = new RegCtrl();
-		//r.regApparat();
-		//r.regTreningsokt(1);
-		r.regOvelseGruppe();
+		r.regTreningsokt(10);
+		
 	}
 	
 	
