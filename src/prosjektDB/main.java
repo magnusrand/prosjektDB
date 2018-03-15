@@ -13,7 +13,7 @@ public class main{
 	static GetCtrl getController = new GetCtrl();
 	static RegCtrl registerController = new RegCtrl();
 	
-	static String loggedInPnr = "Ingen bruker pÃ¥logget enda.";
+	static String loggedInPnr = "Ingen bruker pålogget enda.";
 
 
 	public static void printHelp() {
@@ -21,7 +21,7 @@ public class main{
 		
 		System.out.println("Du skrev hjelp.\nHer er ting du kan gjoere i programmet:\n"+
 				"'help' - Viser denne listen over funksjonalitet i programmet.\n"
-				+"'shutoff' - avslutter programmet.\n'register' - starter registrering av ny bruker/Ã¸kt/Ã¸velse/apparat/Ã¸velsesgruppe.\n'login' - logger pÃ¥ Ã¸nsket bruker gjennom personnummer.\n'home' - tar deg tilbake til hovedmeny.\n'checklogin' - sjekker hvilken bruker som er pÃ¥logget.\n");
+				+"'shutoff' - avslutter programmet.\n'register' - starter registrering av ny bruker/økt/øvelse/apparat/øvelsesgruppe.\n'login' - logger på ænsket bruker gjennom personnummer.\n'home' - tar deg tilbake til hovedmeny.\n'checklogin' - sjekker hvilken bruker som er pålogget.\n");
 	}
 	
 	public static void registerOkt() {
@@ -49,9 +49,9 @@ public class main{
 	}
 	
 	public static void register() {
-		List<String> localCommands = Arrays.asList("bruker", "treningsÃ¸kt", "Ã¸velse", "apparat", "Ã¸velsesgruppe");
+		List<String> localCommands = Arrays.asList("bruker", "treningsøkt", "øvelse", "apparat", "øvelsesgruppe");
 		System.out.println("----Hva vil du registerere?----");
-		System.out.println("Valg: \n1 - bruker - skriv 'bruker'.\n2 - TreningsÃ¸kt - skriv 'treningsÃ¸kt'.\n3 - Ã˜velse - skriv 'Ã¸velse'.\n4 - Apparat - skriv 'apparat'.\n5 - Ã˜velsesgruppe - skriv 'Ã¸velsesgruppe'.\n");
+		System.out.println("Valg: \n1 - bruker - skriv 'bruker'.\n2 - Treningsøkt - skriv 'treningsøkt'.\n3 - øvelse - skriv 'øvelse'.\n4 - Apparat - skriv 'apparat'.\n5 - øvelsesgruppe - skriv 'øvelsesgruppe'.\n");
 		System.out.print("Skriv inn valg: ");
 		String registerValg = scanner.next();
 		if(registerValg.toLowerCase().equals("home")) {
@@ -63,11 +63,11 @@ public class main{
 				registerUser();
 			}
 			
-			if(registerValg.toLowerCase().equals("treningsÃ¸kt")) {
+			if(registerValg.toLowerCase().equals("treningsøkt")) {
 				registerOkt();
 			}
 
-			if(registerValg.toLowerCase().equals("Ã¸velse")) {
+			if(registerValg.toLowerCase().equals("øvelse")) {
 				registerOvelse();
 			}
 			
@@ -75,12 +75,12 @@ public class main{
 				registerApparat();
 			}
 			
-			if(registerValg.toLowerCase().equals("Ã¸velsesgruppe")) {
+			if(registerValg.toLowerCase().equals("øvelsesgruppe")) {
 				registerOvelsesgruppe();
 			}
 		}
 		else {
-			System.out.println("Skriv inn en gyldig kommando, eller home for Ã¥ gÃ¥ til hovedmenyen.");
+			System.out.println("Skriv inn en gyldig kommando, eller home for å gå til hovedmenyen.");
 			register();
 		}
 	}
@@ -132,7 +132,7 @@ public class main{
 	
 	public static void login() {
 		// TODO
-		System.out.print("Skriv inn personnr du vil logge inn pÃ¥:");
+		System.out.print("Skriv inn personnr du vil logge inn på:");
 		String loginPnr = scanner.next();
 		
 		if(loginPnr.toLowerCase().equals("home")) {
@@ -143,18 +143,18 @@ public class main{
 		try {
 			int parsedIntCheck = Integer.parseInt(loginPnr);
 		} catch (Exception e) {
-			System.out.println("Personnummer mÃ¥ vÃ¦re tall!");
+			System.out.println("Personnummer må være tall!");
 			login();
 		}
 		if(getController.eksistererPerson(loginPnr)) {
 			// PersonIDen eksisterte, logger inn pÃ¥ denne.
 			loggedInPnr = loginPnr;
-			System.out.println("Du logget inn pÃ¥ personnummer: " + loginPnr);
+			System.out.println("Du logget inn på personnummer: " + loginPnr);
 			System.out.print("Velkommen ");
 			getController.printPersonNavn(loginPnr);
 		}
 		else {
-			System.out.println("Ingen bruker registrert pÃ¥ pnr: " + loginPnr);
+			System.out.println("Ingen bruker registrert på pnr: " + loginPnr);
 			login();
 		}
 	}

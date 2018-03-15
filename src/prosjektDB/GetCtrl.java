@@ -50,11 +50,11 @@ public class GetCtrl extends DBConn {
 	   try {
 		   
 	       Statement stmt = conn.createStatement();
-	       String query = "select * from TreningsÃ¸kt where TreningsÃ¸ktID ='"+OktID+"'";
+	       String query = "select * from Treningsøkt where TreningsøktID ='"+OktID+"'";
 	       ResultSet rs = stmt.executeQuery(query);
-	       System.out.println("Info om TreningsÃ¸ktID: " + OktID +":"+ "Dato: " + rs.getString("Dato") + " " + "Varighet: " + rs.getString("Varighet") + " " + "Form: " + rs.getString("Form") + " " + "Prestasjon: " + rs.getString("Prestasjon") + " " + "Pnr: " + rs.getString("Pnr"));
+	       System.out.println("Info om TreningsøktID: " + OktID +":"+ "Dato: " + rs.getString("Dato") + " " + "Varighet: " + rs.getString("Varighet") + " " + "Form: " + rs.getString("Form") + " " + "Prestasjon: " + rs.getString("Prestasjon") + " " + "Pnr: " + rs.getString("Pnr"));
 	            } catch (Exception e) {
-	      System.out.println("db error during select of TreningsÃ¸kt = "+e);
+	      System.out.println("db error during select of Treningsøkt = "+e);
 		}
 	   
 	   

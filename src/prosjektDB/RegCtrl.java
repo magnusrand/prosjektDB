@@ -1,5 +1,6 @@
 package prosjektDB;
 
+import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -14,6 +15,7 @@ public class RegCtrl extends DBConn {
 		String navn;
 		String beskrivelse;
 		
+		@SuppressWarnings("resource")
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Apparatnavn: ");
 		navn = "'" + sc.nextLine() + "'";
@@ -86,7 +88,7 @@ public class RegCtrl extends DBConn {
 		}
 		
 		while (true) {
-			System.out.println("ï¿½velse ID (Skriv end nï¿½r ferdig):");
+			System.out.println("Øvelse ID (Skriv end når ferdig):");
 			String ovelseID = sc.next(); 
 			if (ovelseID.toLowerCase().equals("end")) {
 				break;
@@ -95,11 +97,25 @@ public class RegCtrl extends DBConn {
 		}
 		
 		
+		Integer autoKey = null;
 		try {
-			Statement st = conn.createStatement();
-			st.executeUpdate("INSERT INTO Treningsï¿½kt (Dato, Varighet, Form, Prestasjon, Pnr) VALUES(" + dateTime + "," + varighet + "," + form + "," + prestasjon + "," + pnrFKStr + ")");
+			java.sql.PreparedStatement ps = conn.prepareStatement("INSERT INTO Treningsøkt (Dato, Varighet, Form, Prestasjon, Pnr) VALUES(" + dateTime + "," + varighet + "," + form + "," + prestasjon + "," + pnrFKStr + ")", Statement.RETURN_GENERATED_KEYS);
+			ps.executeUpdate();
+			ResultSet rs = ps.getGeneratedKeys();
+			if(rs.next()){
+					autoKey = rs.getInt(1);
+				}
 		}catch(Exception e) {
-			System.out.println("db error during insert of treningsï¿½kt " + e);
+			System.out.println("db error during insert of treningsøkt " + e);
+		}
+		
+		for (String ovelse : ovelser) {
+			try {
+				Statement st = conn.createStatement();
+				st.executeUpdate("INSERT INTO Økt_har_øvelse VALUES(" + ovelse + "," + "'" + autoKey + "'" + ")");
+			}catch(Exception e) {
+				System.out.println("db error during insert of Økt_har_øvelse " + e);
+			}
 		}
 		
 	}
