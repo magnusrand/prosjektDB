@@ -21,23 +21,31 @@ public class main{
 		
 		System.out.println("Du skrev hjelp.\nHer er ting du kan gjoere i programmet:\n"+
 				"'help' - Viser denne listen over funksjonalitet i programmet.\n"
-				+"'shutoff' - avslutter programmet.\n'register' - starter registrering av ny bruker.\n'login' - logger på ønsket bruker gjennom personnummer.\n'home' - tar deg tilbake til hovedmeny.\n'checklogin' - sjekker hvilken bruker som er pålogget.\n");
+				+"'shutoff' - avslutter programmet.\n'register' - starter registrering av ny bruker/økt/øvelse/apparat/øvelsesgruppe.\n'login' - logger på ønsket bruker gjennom personnummer.\n'home' - tar deg tilbake til hovedmeny.\n'checklogin' - sjekker hvilken bruker som er pålogget.\n");
 	}
 	
 	public static void registerOkt() {
 		//TODO
+		try {
+		registerController.regTreningsokt(Integer.parseInt(loggedInPnr));
+		} catch (Exception e) {
+			System.out.println("Logged in pnr er ikke en integer. Har du logget inn?");
+		}
 	}
 	
 	public static void registerOvelse() {
 		//TODO
+		registerController.regovelse();
 	}
 	
 	public static void registerApparat() {
 		//TODO
+		registerController.regApparat();
 	}
 	
 	public static void registerOvelsesgruppe() {
 		//TODO
+		registerController.regOvelseGruppe();
 	}
 	
 	public static void register() {
@@ -190,7 +198,7 @@ public class main{
 		while(!shutoff) {
 			waitForUserAction();
 		}
-		
+		scanner.close();
 		System.out.println("Hade bra!");
 	}
 	

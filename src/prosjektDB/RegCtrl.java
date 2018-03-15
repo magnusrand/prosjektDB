@@ -26,9 +26,7 @@ public class RegCtrl extends DBConn {
 		if (beskrivelse.equals("'null'")) {
 			beskrivelse = "null";
 		}
-		
-		
-		sc.close();
+
 		
 		try {
 			Statement st = conn.createStatement();
@@ -88,7 +86,7 @@ public class RegCtrl extends DBConn {
 		}
 		
 		while (true) {
-			System.out.println("Øvelse ID (Skriv end når ferdig):");
+			System.out.println("ï¿½velse ID (Skriv end nï¿½r ferdig):");
 			String ovelseID = sc.next(); 
 			if (ovelseID.toLowerCase().equals("end")) {
 				break;
@@ -96,14 +94,12 @@ public class RegCtrl extends DBConn {
 			ovelser.add(ovelseID);
 		}
 		
-		sc.close();
-		
 		
 		try {
 			Statement st = conn.createStatement();
-			st.executeUpdate("INSERT INTO Treningsøkt (Dato, Varighet, Form, Prestasjon, Pnr) VALUES(" + dateTime + "," + varighet + "," + form + "," + prestasjon + "," + pnrFKStr + ")");
+			st.executeUpdate("INSERT INTO Treningsï¿½kt (Dato, Varighet, Form, Prestasjon, Pnr) VALUES(" + dateTime + "," + varighet + "," + form + "," + prestasjon + "," + pnrFKStr + ")");
 		}catch(Exception e) {
-			System.out.println("db error during insert of treningsøkt " + e);
+			System.out.println("db error during insert of treningsï¿½kt " + e);
 		}
 		
 	}
