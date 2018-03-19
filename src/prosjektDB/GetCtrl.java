@@ -3,12 +3,41 @@ package prosjektDB;
 // bare hentet denne fra samme sted vi fikk DBConn og RegCTRL. Her kan vi skrive selection/query SQL metoder som main kan kalle pÃ¥ for Ã¥ hente info fra databasen.
 
 import java.sql.*;
+import java.util.Scanner;
 
 
 public class GetCtrl extends DBConn {
 	
 	public GetCtrl() {
 		connect();
+	}
+	
+	public static void main(String[] args) {
+		GetCtrl g = new GetCtrl();
+		g.printNSisteTreningsokter();
+	}
+	
+	public void printNSisteTreningsokter() {
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Hvor mange treningsøkter vil du se?");
+		int n = sc.nextInt();
+		try {
+			Statement stmt = conn.createStatement();
+			String query = "SELECT * FROM Treningsøkt LEFT JOIN Notat ON Treningsøkt.TreningsøktID = Notat.TreningsøktID ORDER BY Treningsøkt.TreningsøktID DESC LIMIT "+String.valueOf(n);
+			ResultSet rs = stmt.executeQuery(query);
+			while(!rs.isLast()) {
+				rs.next();
+				if(rs.getString("NotatID") == null) {
+					System.out.println("TreningsøktID: " + rs.getString("TreningsøktID") + " " + "Dato: " + rs.getString("Dato") + " " + "Varighet: " + rs.getString("Varighet") + " " + "Form: " + rs.getString("Form") + " " + "Prestasjon: " + rs.getString("Prestasjon") + " " + "Pnr: " + rs.getString("Pnr"));					
+				}else {
+					System.out.println("TreningsøktID: " + rs.getString("TreningsøktID") + " " +"Dato: " + rs.getString("Dato") + " " + "Varighet: " + rs.getString("Varighet") + " " + "Form: " + rs.getString("Form") + " " + "Prestasjon: " + rs.getString("Prestasjon") + " " + "Pnr: " + rs.getString("Pnr")+" | "+"NotatID: " + rs.getString("NotatID") + " " + "Treningsformål: " + rs.getString("Treningsformål") + " " + "Opplevelse: " + rs.getString("Opplevelse") + " " + "Annet: " + rs.getString("Annet"));	
+				}
+
+			}
+		} catch (SQLException e) {
+			System.out.println("db error during select of treningsøkt "+e);
+		}
+		
 	}
 	
 	public boolean eksistererOvelsesgruppe(String ovelsesgruppeID) {
