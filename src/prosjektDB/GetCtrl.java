@@ -14,10 +14,40 @@ public class GetCtrl extends DBConn {
 	
 	public static void main(String[] args) {
 		GetCtrl g = new GetCtrl();
-		g.printNSisteTreningsokter();
+		g.printØvelseISammeGruppe();
 	}
 	
-	public void printNSisteTreningsokter() {
+	public void printØvelseISammeGruppe() {
+		System.out.println("Velg gruppe du vil se øvelser for (GruppeID): ");
+		try {
+			Statement st = conn.createStatement();
+			ResultSet rs = st.executeQuery("SELECT * FROM Øvelsesgruppe");
+			System.out.println("Øvelsegruppeliste: ");
+			while(!rs.isLast()) {
+				rs.next();
+				System.out.println("GruppeID: "+rs.getString("GruppeID")+" "+"Navn: "+rs.getString("Navn"));
+			}
+		}catch(Exception e){
+			System.out.println("db error during select of øvelsegruppe list: "+e);
+		}
+		
+		Scanner sc = new Scanner(System.in);
+		String gruppe = sc.next();
+		
+		try {
+			Statement st = conn.createStatement();
+			ResultSet rs = st.executeQuery("SELECT * FROM Øvelse_i_gruppe NATURAL JOIN Øvelse WHERE GruppeID = "+gruppe);
+			System.out.println("Øvelseliste for GruppeID "+gruppe+":");
+			while(!rs.isLast()) {
+				rs.next();
+				System.out.println("ØvelseID: "+rs.getString("ØvelseID")+" "+"Navn: "+rs.getString("Navn")+" "+"Antall kilo: "+rs.getString("Antall_kilo")+" "+"Antall sett: "+rs.getString("Antall_sett")+" "+"Apparatnavn: "+rs.getString("Apparat_navn")+" "+"Beskrivelse: "+rs.getString("Beskrivelse")+" "+"Type: "+rs.getString("Øvelse_type"));
+			}
+		}catch(Exception e){
+			System.out.println("db error during select of øvelse list: "+e);
+		}
+	}
+	
+	public void printNSisteTreningsøkter() {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Hvor mange treningsøkter vil du se?");
 		int n = sc.nextInt();

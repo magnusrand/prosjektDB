@@ -80,11 +80,11 @@ public class RegCtrl extends DBConn {
 		}
 		
 		System.out.println("Montert eller fri? (M/F): ");
-		type = "'" + sc.nextLine() + "'";
+		type = "'" + sc.nextLine().toLowerCase() + "'";
 		if (type.equals("'null'")) {
 			type = "null";
 		}
-		if(!(type.toLowerCase().equals("'f'")||type.toLowerCase().equals("'m'"))){
+		if(!(type.equals("'f'")||type.equals("'m'"))){
 			throw new IllegalArgumentException("Feil type, bruk f eller m.");
 		}
 		
