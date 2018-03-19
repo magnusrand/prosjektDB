@@ -101,29 +101,31 @@ public class RegCtrl extends DBConn {
 		}
 		
 		while (true) {
-			System.out.println("Øvelsesgruppe (oppgi navn) (Skriv end når ferdig):");
+			System.out.println("Øvelsesgruppe tilhørlighet (oppgi ØvelsesgruppeID (Skriv end når ferdig)):");
+			
+			try {
+				Statement st = conn.createStatement();
+				ResultSet rs = st.executeQuery("SELECT * FROM Øvelsesgruppe");
+				System.out.println("Øvelsegruppeliste: ");
+				while(!rs.isLast()) {
+					rs.next();
+					System.out.println("GruppeID: "+rs.getString("GruppeID")+" "+"Navn: "+rs.getString("Navn"));
+				}
+			}catch(Exception e){
+				System.out.println("db error during select of øvelsegruppe list: "+e);
+			}
+			
 			String øvelsesgruppe = sc.next(); 
 			if (øvelsesgruppe.toLowerCase().equals("end")) {
 				break;
 			}
-			String øvelsesgruppeid = "";
-			try {
-				Statement st = conn.createStatement();
-				ResultSet rs = st.executeQuery("SELECT GruppeID from Øvelsesgruppe WHERE navn = '"+øvelsesgruppe+"'");
-				if(rs.next()){
-					øvelsesgruppeid ="'"+ Integer.toString(rs.getInt(1))+"'";					
-				}
-			} catch (SQLException e) {
-				throw new IllegalArgumentException("Feil ved henting av øvelsesgruppeid: "+e);
-			}
 			
 			try {
 				Statement st = conn.createStatement();
-				st.executeUpdate("INSERT INTO Øvelse_i_gruppe VALUES("+"'"+autoKey+"'"+","+øvelsesgruppeid+")");
+				st.executeUpdate("INSERT INTO Øvelse_i_gruppe VALUES("+"'"+autoKey+"'"+","+"'"+øvelsesgruppe+"'"+")");
 			}catch(Exception e) {
 				System.out.println("db error during insert of øvelse_i_gruppe: "+e);
 			}
-			
 			
 		}
 		
@@ -175,6 +177,17 @@ public class RegCtrl extends DBConn {
 		
 		while (true) {
 			System.out.println("Øvelse ID (Skriv end når ferdig):");
+			try {
+				Statement st = conn.createStatement();
+				ResultSet rs = st.executeQuery("SELECT * FROM Øvelse");
+				System.out.println("Øvelseliste: ");
+				while(!rs.isLast()) {
+					rs.next();
+					System.out.println("ØvelseID: "+rs.getString("ØvelseID")+" "+"Navn: "+rs.getString("Navn")+" "+"Antall kilo: "+rs.getString("Antall_kilo")+" "+"Antall sett: "+rs.getString("Antall_sett")+" "+"Apparatnavn: "+rs.getString("Apparat_navn")+" "+"Beskrivelse: "+rs.getString("Beskrivelse")+" "+"Type: "+rs.getString("Øvelse_type"));
+				}
+			}catch(Exception e){
+				System.out.println("db error during select of øvelse list: "+e);
+			}
 			String ovelseID = sc.next(); 
 			if (ovelseID.toLowerCase().equals("end")) {
 				break;
@@ -280,7 +293,6 @@ public class RegCtrl extends DBConn {
 	
 	public static void main(String[] args) {
 		RegCtrl r = new RegCtrl();
-		r.regTreningsokt(10);
 		
 	}
 	
