@@ -188,7 +188,7 @@ public class RegCtrl extends DBConn {
 			}catch(Exception e){
 				System.out.println("db error during select of øvelse list: "+e);
 			}
-			String ovelseID = sc.next(); 
+			String ovelseID = sc.nextLine(); 
 			if (ovelseID.toLowerCase().equals("end")) {
 				break;
 			}
@@ -217,10 +217,9 @@ public class RegCtrl extends DBConn {
 			}
 		}
 		
-		
-		System.out.println("Vil du registrere notat? (Y/N): ");
 		while (true) {
-			String branch = sc.next().toLowerCase();
+			System.out.println("Vil du registrere notat? (Y/N): ");
+			String branch = sc.nextLine().toLowerCase();
 			if (branch.equals("n")) {
 				break;
 			}
