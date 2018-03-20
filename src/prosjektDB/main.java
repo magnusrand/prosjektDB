@@ -223,14 +223,17 @@ public class main{
 		} else {
 			return;
 		}
-
+	}
+	
+	public static void getResultatlogg() {
+		getController.printResultatLogg();
 	}
 	
 	public static void load() {
 		// kalles av bruker for å entre valgmenyen for å laste inn økter/øvelser/apparater/øvelsesgrupper
 		
-		List<String> localLoadCommands = Arrays.asList("treningsøkt", "øvelse", "apparat", "øvelsesgruppe");
-		System.out.println("Hva vil du laste inn? Her er valgene:\n - Treningsøkt - skriv 'treningsøkt'.\n - Øvelse - skriv 'øvelse'.\n - Apparat - skriv 'apparat'\n - Øvelsesgruppe - skriv 'øvelsesgruppe'.");
+		List<String> localLoadCommands = Arrays.asList("treningsøkt", "øvelse", "apparat", "øvelsesgruppe", "resultatlogg");
+		System.out.println("Hva vil du laste inn? Her er valgene:\n - Treningsøkt - skriv 'treningsøkt'.\n - Øvelse - skriv 'øvelse'.\n - Apparat - skriv 'apparat'\n - Øvelsesgruppe - skriv 'øvelsesgruppe'.\n - Resultatlogg - skriv 'resultatlogg'.");
 		System.out.print("Skriv valg her: ");
 		String loadInput = scanner.next();
 		if(loadInput.equals("home")) {
@@ -251,6 +254,9 @@ public class main{
 			}
 			else if(loadInput.equals("øvelsesgruppe")) {
 				getOvelsesgruppe();
+			}
+			else if(loadInput.equals("resultatlogg")) {
+				getResultatlogg();
 			}
 		}
 		

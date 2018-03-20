@@ -47,6 +47,59 @@ public class GetCtrl extends DBConn {
 		}
 	}
 	
+	public void printResultatLogg() {
+		System.out.println("Hvilken øvelse vil du ha resultatlogg for? Her er en liste over alle øvelsesID-er:");
+		
+		try {
+			Statement st = conn.createStatement();
+			ResultSet rs = st.executeQuery("SELECT * FROM Øvelse");
+			System.out.println("Øvelseliste: ");
+			while(!rs.isLast()) {
+				rs.next();
+				System.out.println("ØvelseID: "+rs.getString("ØvelseID")+" "+"Navn: "+rs.getString("Navn")+" "+"Antall kilo: "+rs.getString("Antall_kilo")+" "+"Antall sett: "+rs.getString("Antall_sett")+" "+"Apparatnavn: "+rs.getString("Apparat_navn")+" "+"Beskrivelse: "+rs.getString("Beskrivelse")+" "+"Type: "+rs.getString("Øvelse_type"));
+			}
+		}catch(Exception e){
+			System.out.println("db error during select of øvelse list: "+e);
+		}
+		Scanner sc = new Scanner(System.in);
+		String ovelseValg = "deafult";
+		boolean selectingOvelseID = false;
+		while(!selectingOvelseID) {
+		System.out.print("Skriv inn øvelsen (ID) du ønsker logg for: ");
+		ovelseValg = sc.nextLine();
+		if(eksistererOvelse(ovelseValg)) {
+			selectingOvelseID = true;
+		}
+		else if(ovelseValg.equals("home")) {
+			return;
+		}
+		else {
+			System.out.println("Velg en ID som eksisterer, eller skriv 'home' for å returnere til hovedmenyen!");
+		}
+		}
+		
+		System.out.print("Fra hvilket tidspunkt ønsker du å hente logg? Oppgi på formatet YYYY-MM-DD HH:MM:SS   Skriv her: ");
+		String startdate = sc.nextLine();
+		System.out.print("Til hvilket tidspunkt ønsker du å hente logg? Oppgi på formatet YYYY-MM-DD HH:MM:SS   Skriv her: ");
+		String enddate = sc.nextLine();
+		
+		
+		try {
+			Statement stmt = conn.createStatement();
+			String query = "SELECT * FROM (Økt_har_øvelse NATURAL JOIN Øvelse) NATURAL JOIN Treningsøkt WHERE ØvelseID = " +ovelseValg +" AND Dato > '"+ startdate +"' AND Dato < '" + enddate +"'";
+			ResultSet rs = stmt.executeQuery(query);
+			System.out.println("Resultatlogg: ");
+			while(!rs.isLast()) {
+				rs.next();
+				System.out.println("ØvelseID: "+rs.getString("ØvelseID")+" | "+"Navn: "+rs.getString("Navn")+" | "+"Antall kilo: "+rs.getString("Antall_kilo")+" | "+"Antall sett: "+rs.getString("Antall_sett")+" | "+"Apparatnavn: "+rs.getString("Apparat_navn")+" | "+"Beskrivelse: "+rs.getString("Beskrivelse")+" | "+"Type: "+rs.getString("Øvelse_type") +" | " + "Pnr: " +rs.getString("Pnr") + " | " + "Dato: " + rs.getString("Dato"));
+			}
+		} catch (SQLException e) {
+			System.out.println("db error during select of treningsøkt "+e);
+		}
+		
+		
+	}
+	
 	public void printNSisteTreningsøkter() {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Hvor mange treningsøkter vil du se?");
