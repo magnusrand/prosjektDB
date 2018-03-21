@@ -1,5 +1,5 @@
 # Prosjekt Del. 2 - TDT4145
-Prosjektoppgave i databaser med *Tobias, Henrik, Jesper og Magnus*
+Prosjektoppgave i databaser med *[Tobias](https://github.com/roonskipp), [Henrik](https://github.com/hsyver), [Jesper](https://github.com/JesperBry) og [Magnus](https://github.com/magnusrand)*
 
 **Innlevering 2: Treningsdagboken implementert i Java med JDBC**
 Her skal treningsdagboken implementeres i Java i henhold til datamodellen gitt i innlevering
