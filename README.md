@@ -1,3 +1,7 @@
+<p align="center"> 
+  <img src="https://github.com/magnusrand/prosjektDB/blob/master/Logo.PNG" width="310" height="264">
+</p>
+
 # Prosjekt Del. 2 - TDT4145
 Prosjektoppgave i databaser med *[Tobias](https://github.com/roonskipp), [Henrik](https://github.com/hsyver), [Jesper](https://github.com/JesperBry) og [Magnus](https://github.com/magnusrand)*
 
